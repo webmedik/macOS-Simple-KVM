@@ -1,3 +1,58 @@
+# macOS-Simple-KVM guia Español
+
+Para Linux
+
+sudo apt-get install qemu-system qemu-utils python3 python3-pip 
+
+./jumpstart.sh
+
+qemu-img create -f qcow2 MyDisk.qcow2 100G
+
+editar y agregar a basic.sh:
+
+    -drive id=SystemDisk,if=none,file=MyDisk.qcow2 \
+    -device ide-hd,bus=sata.4,drive=SystemDisk \
+
+ejecutar basic.sh
+
+Se inicia Quemu y se pierde el control del mouse, con las teclas de movimiento seleccionar MacOS y presionar enter
+
+Aparecen 3 particiones
+
+3-Quemu HardDisk Media 100Gb
+2-Quemu HardDisk Media 2Gb
+1-MacOS Base System
+
+Seleccionar el 3 y presionar ERASE en el menu superior
+
+Seleccionar el Nombre, con AnyDesk no tenia control del teclado completo
+Seleccionar APFS y presionar el botón Erase
+
+Como cambiar la Resolución de Pantalla
+
+La guia es guide-screen-resolution.md
+
+Ejecutar la terminal, ejecutar el comando "sudo diskutil list", buscar el /dev/disk1, la partición EFI, el identifier "disk1s1"
+
+Ejecutar sudo diskutil mount disk2s1
+
+Aparecerá el disco en el Finder, ir a EFI/Clover, editar config.plist, cambiar la resolución 1280x720 por 1920x1080, guardar y apagar el emulador
+
+ejecutar ./basic.sh y presionar ESC para entrar al BIOS del quemu, seleccionar:
+- Device Manager
+- OVMF
+- cambiar la resolución 1280x720 por 1920x1080
+- Presionar F10 o "commit changes and exit", volver al menú principal y presionar RESET
+
+Para cambiar la configuración de procesador y memoria, editar ./basic.sh:
+-m 2G\ cambiar a -m 8G\
+-smp 4, cores=2\ cambiar a lo necesario
+
+
+
+
+
+
 # macOS-Simple-KVM
 Documentation to set up a simple macOS VM in QEMU, accelerated by KVM.
 
